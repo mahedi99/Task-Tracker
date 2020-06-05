@@ -33,14 +33,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/admin/getUsers").hasRole("ADMIN")
+        http
+                .cors().and().csrf().disable()//to enable post request
+                .authorizeRequests()
+                .antMatchers("/admin/*").hasRole("ADMIN")
 //                .antMatchers("/").permitAll()
-                .and().formLogin();
+//                .and().formLogin(); //for logging-in using default form
+                .and().httpBasic(); //for encoded credentials
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }
