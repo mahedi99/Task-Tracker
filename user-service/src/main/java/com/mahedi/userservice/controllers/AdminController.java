@@ -51,10 +51,15 @@ public class AdminController {
      * @return the list of {@code User}
      */
     @PostMapping(path = "/createUser")
-    public ResponseEntity<Void> createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody User user){
+        if (user.getId() != null && userRepository.existsById(user.getId())){
+            return ResponseEntity.badRequest()
+                    .body("User Already Exist");
+        }
+
         User newUser = userRepository.save(user);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{" + newUser.getId() + "}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }

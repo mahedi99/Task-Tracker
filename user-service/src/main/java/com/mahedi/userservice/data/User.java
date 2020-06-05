@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * @author Mahedi Hassan
@@ -23,7 +22,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
@@ -31,7 +30,7 @@ public class User {
     private String username;
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "roleid", nullable = false)
     private UserRole role;
 }
