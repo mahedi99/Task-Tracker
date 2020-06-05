@@ -1,7 +1,7 @@
 # Task-Tracker
 
 
-# Spring Boot, MySQL, JPA, Hibernate, Spring Security Rest API Tutorial
+# Spring Boot, MySQL, JPA, Hibernate, Spring Security, Rest API
 
 Build Restful CRUD API for a simple Task-Taking application using Spring Boot, Spring Security, Mysql, JPA and Hibernate.
 
