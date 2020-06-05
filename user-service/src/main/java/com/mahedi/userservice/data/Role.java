@@ -1,6 +1,6 @@
 package com.mahedi.userservice.data;
 
 public enum Role {
-    ADMIN,
-    USER
+    ROLE_ADMIN,
+    ROLE_USER
 }
