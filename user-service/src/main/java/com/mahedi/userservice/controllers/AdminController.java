@@ -1,14 +1,13 @@
 package com.mahedi.userservice.controllers;
 
 import com.mahedi.userservice.data.User;
-import com.mahedi.userservice.repositories.UserRepository;
-import com.mahedi.userservice.repositories.UserRoleRepository;
+import com.mahedi.userservice.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collection;
 
 /**
  * @author Mahedi Hassan
@@ -20,12 +19,10 @@ import java.util.Collection;
 public class AdminController {
 
 
-    private UserRepository userRepository;
-    private UserRoleRepository userRoleRepository;
+    private UserService userService;
 
-    public AdminController(UserRepository userRepository, UserRoleRepository userRoleRepository){
-        this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
+    public AdminController(UserService userService){
+        this.userService = userService;
     }
 
     /**
@@ -33,8 +30,13 @@ public class AdminController {
      * @return the list of {@code User}
      */
     @GetMapping(path = "/getUsers")
-    public Collection<User> getAllUser(){
-        return userRepository.findAllUsers();
+    public ResponseEntity getAllUser(){
+        try {
+            return new ResponseEntity(userService.getAllUsers(), HttpStatus.OK);
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest()
+                    .body("BAD REQUEST");
+        }
     }
 
     /**
@@ -42,8 +44,13 @@ public class AdminController {
      * @return the list of {@code User}
      */
     @GetMapping(path = "/getAdmins")
-    public Collection<User> getAllAdmins(){
-        return userRepository.findAllAdmins();
+    public ResponseEntity getAllAdmins(){
+        try {
+            return new ResponseEntity(userService.getAllAdmins(), HttpStatus.OK);
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest()
+                    .body("BAD REQUEST");
+        }
     }
 
     /**
@@ -52,14 +59,26 @@ public class AdminController {
      */
     @PostMapping(path = "/createUser")
     public ResponseEntity<String> createUser(@RequestBody User user){
-        if (user.getId() != null && userRepository.existsById(user.getId())){
+        User newUser;
+        try {
+            newUser = userService.createUser(user);
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest()
-                    .body("User Already Exist");
+                    .body(e.getMessage());
         }
-
-        User newUser = userRepository.save(user);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{" + newUser.getId() + "}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(path = "/updateUser")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        try {
+            userService.updateUser(user);
+        }catch (RuntimeException e){
+            return new ResponseEntity(user, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(user, HttpStatus.OK);
+    }
+
 }
