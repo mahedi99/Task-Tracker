@@ -1,1 +1,26 @@
-<p>admin works!</p>
+<h1>List Users</h1>
+
+<!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{user.name}}</td>
+                <td><button (click)="updateUser(user.id)" class="btn btn-success">Update</button></td>
+                <td><button (click)="deleteUser(user.id)" class="btn btn-warning">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <button (click)="addUser()" class="btn btn-success">Add</button>
+    </div>
+</div>
