@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()//to enable post request
                 .authorizeRequests()
                 .antMatchers("/admin/*").hasRole("ADMIN")
+                .antMatchers("/basicauth").permitAll()
 //                .antMatchers("/").permitAll()
 //                .and().formLogin(); //for logging-in using default form
                 .and().httpBasic(); //for encoded credentials

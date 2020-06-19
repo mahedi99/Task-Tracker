@@ -10,7 +10,8 @@ import { ErrorComponent } from './error/error.component';
 import { MenuComponent } from './menu/menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { LogoutComponent } from './logout/logout.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorBasicAuthServiceService } from './service/http/http-interceptor-basic-auth-service.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorBasicAuthServiceService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

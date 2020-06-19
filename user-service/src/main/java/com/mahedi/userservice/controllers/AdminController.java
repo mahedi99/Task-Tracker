@@ -16,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("admin")
+@CrossOrigin("http://localhost:4200")
 public class AdminController {
 
 
